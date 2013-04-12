@@ -2,6 +2,7 @@ import sublime, sublime_plugin
 import os
 
 template = """<snippet>
+  <!-- Example: Hello, ${1:this} is a ${2:snippet}. -->
   <content><![CDATA[
 %s
 ]]></content>

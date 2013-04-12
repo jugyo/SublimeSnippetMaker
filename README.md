@@ -3,6 +3,8 @@ SublimeSnippetMaker
 
 Sublime Text 2 plugin that provides you to make snippets easily.
 
+![screencast](https://raw.github.com/jugyo/SublimeSnippetMaker/master/screencast.gif)
+
 ## Installation
 
 ```

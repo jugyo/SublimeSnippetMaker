@@ -30,7 +30,6 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         self.view.window().show_input_panel('File Name', 'Default.sublime-snippet', self.make_snippet, None, None)
 
     def make_snippet(self, file_name):
-        print self.trigger, self.description
         if len(file_name) > 0:
             file_path = os.path.join(sublime.packages_path(), 'User', file_name)
 
@@ -40,7 +39,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
 
             file = open(file_path, "wb")
             snippet_xml = template % (self.snippet_text, self.trigger, self.description, self.scope)
-            file.write(snippet_xml)
+            file.write(bytes(snippet_xml, 'UTF-8'))
             file.close()
 
             self.view.window().open_file(file_path)

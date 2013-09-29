@@ -23,15 +23,15 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
 
     def set_trigger(self, trigger):
         self.trigger = trigger
-        self.view.window().show_input_panel('Description', '', self.set_description, None, None)
+        self.view.window().show_input_panel('Description', 'Default', self.set_description, None, None)
 
     def set_description(self, description):
         self.description = description
-        self.view.window().show_input_panel('File Name', 'Default.sublime-snippet', self.make_snippet, None, None)
+        self.view.window().show_input_panel('File Name', 'Default', self.make_snippet, None, None)
 
     def make_snippet(self, file_name):
         if len(file_name) > 0:
-            file_path = os.path.join(sublime.packages_path(), 'User', file_name)
+            file_path = os.path.join(sublime.packages_path(), 'User', file_name+'.sublime-snippet')
 
             if os.path.exists(file_path):
                 if sublime.ok_cancel_dialog('Override %s?' % file_name) is False:
@@ -39,7 +39,10 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
 
             file = open(file_path, "wb")
             snippet_xml = template % (self.snippet_text, self.trigger, self.description, self.scope)
-            file.write(bytes(snippet_xml, 'UTF-8'))
+            if int(sublime.version())>=3000:
+              file.write(bytes(snippet_xml, 'UTF-8'))
+            else: #sublimeText2 support
+              file.write(bytes(snippet_xml))
             file.close()
 
             self.view.window().open_file(file_path)

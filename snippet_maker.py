@@ -23,7 +23,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
 
     def set_trigger(self, trigger):
         self.trigger = trigger
-        self.view.window().show_input_panel('Description', 'Default', self.set_description, None, None)
+        self.view.window().show_input_panel('Description', '', self.set_description, None, None)
 
     def set_description(self, description):
         self.description = description

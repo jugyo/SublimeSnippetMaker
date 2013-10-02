@@ -17,7 +17,6 @@ template = """<snippet>
 
 class MakeSnippetCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        self.scope = self.view.scope_name(self.view.sel()[0].begin()).split(' ')[0]
         self.snippet_text = "\n".join([self.view.substr(i) for i in self.view.sel()])
         self.view.window().show_input_panel('Trigger', '', self.set_trigger, None, None)
 
@@ -27,7 +26,12 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
 
     def set_description(self, description):
         self.description = description
-        self.view.window().show_input_panel('File Name', 'Default', self.make_snippet, None, None)
+        scopes = self.view.scope_name(self.view.sel()[0].begin()).strip().replace(' ', ', ')
+        self.view.window().show_input_panel('Scope', scopes, self.set_scopes, None, None)
+
+    def set_scopes(self, scopes):
+        self.scopes = scopes
+        self.view.window().show_input_panel('File Name', '', self.make_snippet, None, None)
 
     def make_snippet(self, file_name):
         if len(file_name) > 0:
@@ -38,7 +42,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
                     return
 
             file = open(file_path, "wb")
-            snippet_xml = template % (self.snippet_text, self.trigger, self.description, self.scope)
+            snippet_xml = template % (self.snippet_text, self.trigger, self.description, self.scopes)
             if int(sublime.version())>=3000:
               file.write(bytes(snippet_xml, 'UTF-8'))
             else: #sublimeText2 support

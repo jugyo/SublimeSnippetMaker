@@ -1,6 +1,5 @@
-import sublime
-import sublime_plugin
-import os
+import sublime, sublime_plugin
+import os, re
 
 template = """<snippet>
   <!-- Example: Hello, ${1:this} is a ${2:snippet}. -->
@@ -30,14 +29,18 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
 
     def set_scopes(self, scopes):
         self.scopes = scopes
-        self.view.window().show_input_panel('File Name', '', self.make_snippet, None, None)
+        self.ask_file_name()
+
+    def ask_file_name(self):
+        self.view.window().show_input_panel('File Name', self.trigger + '.sublime-snippet', self.make_snippet, None, None)
 
     def make_snippet(self, file_name):
-        if len(file_name) > 0:
-            file_path = os.path.join(sublime.packages_path(), 'User', file_name+'.sublime-snippet')
+        if re.match('^\w+\.sublime\-snippet$', file_name):
+            file_path = os.path.join(sublime.packages_path(), 'User', file_name)
 
             if os.path.exists(file_path):
                 if sublime.ok_cancel_dialog('Override %s?' % file_name) is False:
+                    self.ask_file_name()
                     return
 
             file = open(file_path, "wb")
@@ -49,6 +52,6 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
             file.close()
 
             self.view.window().open_file(file_path)
-
         else:
-            sublime.error_message('Please specify the snippet name!!')
+            sublime.error_message('Please specify a valid snippet file name!! i.e. `awesome.sublime-snippet`')
+            self.ask_file_name()

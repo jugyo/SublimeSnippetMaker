@@ -14,7 +14,6 @@ template = """<snippet>
   <scope>%s</scope>
 </snippet>"""
 
-
 class MakeSnippetCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         self.snippet_text = "\n".join([self.view.substr(i) for i in self.view.sel()])
@@ -43,10 +42,10 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
 
             file = open(file_path, "wb")
             snippet_xml = template % (self.snippet_text, self.trigger, self.description, self.scopes)
-            if int(sublime.version())>=3000:
-              file.write(bytes(snippet_xml, 'UTF-8'))
-            else: #sublimeText2 support
-              file.write(bytes(snippet_xml))
+            if int(sublime.version()) >= 3000:
+                file.write(bytes(snippet_xml, 'UTF-8'))
+            else: # To support Sublime Text 2
+                file.write(bytes(snippet_xml))
             file.close()
 
             self.view.window().open_file(file_path)

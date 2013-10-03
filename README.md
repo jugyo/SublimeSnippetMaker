@@ -14,7 +14,8 @@ $ git clone https://github.com/jugyo/SublimeSnippetMaker.git SnippetMaker
 
 ## Usage
 
-Select text for snippet then execute the `Make Snippet` command in the Command Palette.  
+* Select text for snippet then execute the `Make Snippet` command in the Command Palette.
+* And you can edit your snippets by using `Edit Snippet` command.
 
 ### Edit by @fabiantheblind
 

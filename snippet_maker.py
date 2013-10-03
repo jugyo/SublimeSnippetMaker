@@ -1,5 +1,6 @@
 import sublime, sublime_plugin
 import os, re
+from glob import iglob
 
 template = """<snippet>
   <!-- Example: Hello, ${1:this} is a ${2:snippet}. -->
@@ -55,3 +56,24 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         else:
             sublime.error_message('Please specify a valid snippet file name!! i.e. `awesome.sublime-snippet`')
             self.ask_file_name()
+
+class EditSnippetCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        snippets = [
+            [os.path.basename(filepath), filepath]
+                for filepath
+                    in iglob(os.path.join(sublime.packages_path(), 'User', '*.sublime-snippet'))]
+
+        def on_done(index):
+            if index >= 0:
+                self.window.open_file(snippets[index][1])
+            else:
+                view = self.window.active_view()
+                if self.window.get_view_index(view)[1] == -1:
+                    view.close()
+
+        def on_highlight(index):
+            if index >= 0:
+                self.window.open_file(snippets[index][1], sublime.TRANSIENT)
+
+        self.window.show_quick_panel([_[0] for _ in snippets], on_done, sublime.MONOSPACE_FONT, -1, on_highlight)

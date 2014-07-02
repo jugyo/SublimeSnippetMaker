@@ -37,7 +37,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
 
     def make_snippet(self, file_name):
         if re.match('^\w+\.sublime\-snippet$', file_name):
-            file_path = os.path.join(sublime.packages_path(), 'User', file_name)
+            file_path = os.path.join(sublime.packages_path(), 'User', 'MySnippets', file_name)
 
             if os.path.exists(file_path):
                 if sublime.ok_cancel_dialog('Override %s?' % file_name) is False:
@@ -62,7 +62,7 @@ class EditSnippetCommand(sublime_plugin.WindowCommand):
         snippets = [
             [os.path.basename(filepath), filepath]
                 for filepath
-                    in iglob(os.path.join(sublime.packages_path(), 'User', '*.sublime-snippet'))]
+                    in iglob(os.path.join(sublime.packages_path(), 'User', 'MySnippets', '*.sublime-snippet'))]
 
         def on_done(index):
             if index >= 0:

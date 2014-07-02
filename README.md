@@ -20,3 +20,7 @@ $ git clone https://github.com/jugyo/SublimeSnippetMaker.git SnippetMaker
 ### Edit by @fabiantheblind
 
 Added additional input for description.
+
+### Edit by @ctf0
+
+the plugin now save snippets @ (User/MySnippets) instead of (User)

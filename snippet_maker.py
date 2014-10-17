@@ -36,26 +36,29 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         self.view.window().show_input_panel('File Name', self.trigger + '.sublime-snippet', self.make_snippet, None, None)
 
     def make_snippet(self, file_name):
-        if re.match('^\w+\.sublime\-snippet$', file_name):
-            file_path = os.path.join(sublime.packages_path(), 'User', file_name)
+        file_path = os.path.join(sublime.packages_path(), 'User', file_name)
 
-            if os.path.exists(file_path):
-                if sublime.ok_cancel_dialog('Override %s?' % file_name) is False:
-                    self.ask_file_name()
-                    return
+        if os.path.exists(file_path) and not sublime.ok_cancel_dialog('Override %s?' % file_name):
+            self.ask_file_name()
+            return
 
-            file = open(file_path, "wb")
-            snippet_xml = template % (self.snippet_text, self.trigger, self.description, self.scopes)
-            if int(sublime.version()) >= 3000:
-                file.write(bytes(snippet_xml, 'UTF-8'))
-            else: # To support Sublime Text 2
-                file.write(bytes(snippet_xml))
-            file.close()
-
-            self.view.window().open_file(file_path)
-        else:
+        try:
+            self.write_snippet(file_path)
+        except OSError:
             sublime.error_message('Please specify a valid snippet file name!! i.e. `awesome.sublime-snippet`')
             self.ask_file_name()
+        else:
+            self.view.window().open_file(file_path)
+
+    def write_snippet(self, file_path):
+        file = open(file_path, "wb")
+        snippet_xml = template % (self.snippet_text, self.trigger, self.description, self.scopes)
+        if int(sublime.version()) >= 3000:
+            file.write(bytes(snippet_xml, 'UTF-8'))
+        else: # To support Sublime Text 2
+            file.write(bytes(snippet_xml))
+        file.close()
+
 
 class EditSnippetCommand(sublime_plugin.WindowCommand):
     def run(self):

@@ -6,5 +6,9 @@
     {
         "caption": "SnippetMaker: Edit Snippet",
         "command": "edit_snippet"
+    },
+    {
+        "caption": "SnippetMaker: Delete Snippet",
+        "command": "delete_snippet"
     }
 ]

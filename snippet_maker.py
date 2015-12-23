@@ -77,3 +77,28 @@ class EditSnippetCommand(sublime_plugin.WindowCommand):
                 self.window.open_file(snippets[index][1], sublime.TRANSIENT)
 
         self.window.show_quick_panel([_[0] for _ in snippets], on_done, sublime.MONOSPACE_FONT, -1, on_highlight)
+
+class DeleteSnippetCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        snippets = [
+            [os.path.basename(filepath), filepath]
+                for filepath
+                    in iglob(os.path.join(sublime.packages_path(), 'User', '*.sublime-snippet'))]
+
+        def on_done(index):
+          global snippetFile
+          snippetFile = snippets[index]
+          items = [
+            ["DELETE FILE?!","Are you sure you want to delete this snippet?"],
+            ["No","Do not delete"],
+            ["Yes","Delete this snippet file immediately"]
+          ]
+          self.window.show_quick_panel(items, delete_file)
+
+        def delete_file(index):
+          global snippetFile
+          if index == 2:
+            os.remove(snippetFile[1])
+            sublime.message_dialog("Snippet successfully deleted: " + snippetFile[0])
+
+        self.window.show_quick_panel([_[0] for _ in snippets], on_done, sublime.MONOSPACE_FONT, -1)

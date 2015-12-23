@@ -16,7 +16,12 @@ $ git clone https://github.com/jugyo/SublimeSnippetMaker.git SnippetMaker
 
 * Select text for snippet then execute the `Make Snippet` command in the Command Palette.
 * And you can edit your snippets by using `Edit Snippet` command.
+* If you need to delete a snippet, use the `Delete Snippet` command.
 
 ### Edit by @fabiantheblind
 
 Added additional input for description.
+
+### Edit by @jakebathman
+
+Added ability to delete snippets through the Command Palette

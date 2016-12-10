@@ -9,9 +9,10 @@ template = """<snippet>
 ]]></content>
   <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
   <tabTrigger>%s</tabTrigger>
-  <description>%s</description>
   <!-- Optional: Set a scope to limit where the snippet will trigger -->
   <scope>%s</scope>
+  <!-- Optional: Will be displayed in the command palette, and in the popup -->
+  <description>%s</description>
 </snippet>"""
 
 class MakeSnippetCommand(sublime_plugin.TextCommand):
@@ -33,7 +34,9 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         self.ask_file_name()
 
     def ask_file_name(self):
-        self.view.window().show_input_panel('File Name', self.trigger + '.sublime-snippet', self.make_snippet, None, None)
+        input_view = self.view.window().show_input_panel('File Name', self.trigger + '.sublime-snippet', self.make_snippet, None, None)
+        input_view.sel().clear()
+        input_view.sel().add(sublime.Region(0, len( os.path.splitext(os.path.basename(self.trigger))[0] )))
 
     def make_snippet(self, file_name):
         if re.match('^\w+\.sublime\-snippet$', file_name):
@@ -45,7 +48,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
                     return
 
             file = open(file_path, "wb")
-            snippet_xml = template % (self.snippet_text, self.trigger, self.description, self.scopes)
+            snippet_xml = template % (self.snippet_text, self.trigger, self.scopes, self.description)
             if int(sublime.version()) >= 3000:
                 file.write(bytes(snippet_xml, 'UTF-8'))
             else: # To support Sublime Text 2

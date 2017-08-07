@@ -1,18 +1,17 @@
-import sublime, sublime_plugin
-import os, re
-from glob import iglob
+import os
+
+import sublime
+import sublime_plugin
 
 template = """<snippet>
-  <!-- Example: Hello, ${1:this} is a ${2:snippet}. -->
-  <content><![CDATA[
+<content><![CDATA[
 %s
 ]]></content>
-  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-  <tabTrigger>%s</tabTrigger>
-  <description>%s</description>
-  <!-- Optional: Set a scope to limit where the snippet will trigger -->
-  <scope>%s</scope>
+<tabTrigger>%s</tabTrigger>
+<description>%s</description>
+<scope>%s</scope>
 </snippet>"""
+
 
 class MakeSnippetCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -45,38 +44,18 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         try:
             self.write_snippet(file_path)
         except OSError:
-            sublime.error_message('Please specify a valid snippet file name!! i.e. `awesome.sublime-snippet`')
+            sublime.error_message('Please specify a valid snippet file name! i.e. `awesome.sublime-snippet`')
             self.ask_file_name()
         else:
             self.view.window().open_file(file_path)
 
     def write_snippet(self, file_path):
         file = open(file_path, "wb")
-        snippet_xml = template % (self.snippet_text, self.trigger, self.description, self.scopes)
-        if int(sublime.version()) >= 3000:
-            file.write(bytes(snippet_xml, 'UTF-8'))
-        else: # To support Sublime Text 2
-            file.write(bytes(snippet_xml))
+        snippet_xml = template % (
+            self.snippet_text,
+            self.trigger,
+            self.description,
+            self.scopes
+        )
+        file.write(bytes(snippet_xml, 'UTF-8'))
         file.close()
-
-
-class EditSnippetCommand(sublime_plugin.WindowCommand):
-    def run(self):
-        snippets = [
-            [os.path.basename(filepath), filepath]
-                for filepath
-                    in iglob(os.path.join(sublime.packages_path(), 'User', '*.sublime-snippet'))]
-
-        def on_done(index):
-            if index >= 0:
-                self.window.open_file(snippets[index][1])
-            else:
-                view = self.window.active_view()
-                if self.window.get_view_index(view)[1] == -1:
-                    view.close()
-
-        def on_highlight(index):
-            if index >= 0:
-                self.window.open_file(snippets[index][1], sublime.TRANSIENT)
-
-        self.window.show_quick_panel([_[0] for _ in snippets], on_done, sublime.MONOSPACE_FONT, -1, on_highlight)

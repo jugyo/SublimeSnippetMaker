@@ -2,9 +2,5 @@
     {
         "caption": "SnippetMaker: Make Snippet",
         "command": "make_snippet"
-    },
-    {
-        "caption": "SnippetMaker: Edit Snippet",
-        "command": "edit_snippet"
     }
 ]

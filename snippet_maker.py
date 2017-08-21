@@ -65,7 +65,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
 
     def make_snippet(self, file_name):
         settings = sublime.load_settings('Breadcrumbs.sublime-settings')
-        location = settings.get('snippet_location', 'SnippetMaker')
+        location = settings.get('snippet_location', 'Snippets')
 
         file_path = os.path.join(
             sublime.packages_path(),

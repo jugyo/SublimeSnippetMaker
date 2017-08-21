@@ -35,7 +35,10 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         self.view.window().show_input_panel('File Name', self.trigger + '.sublime-snippet', self.make_snippet, None, None)
 
     def make_snippet(self, file_name):
-        file_path = os.path.join(sublime.packages_path(), 'User', 'Snippets', file_name)
+        settings = sublime.load_settings('Breadcrumbs.sublime-settings')
+        location = settings.get('snippet_location', 'SnippetMaker')
+
+        file_path = os.path.join(sublime.packages_path(), 'User', location, file_name)
 
         if os.path.exists(file_path) and not sublime.ok_cancel_dialog('Override %s?' % file_name):
             self.ask_file_name()

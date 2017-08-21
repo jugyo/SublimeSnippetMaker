@@ -6,4 +6,4 @@ Makes managing snippets easy.
 * `Edit Snippet` let's you select a snippet file to open and edit.
 * Use `Delete Snippet` to send a snippet you no longer need to the trash.
 
-![](https://raw.githubusercontent.com/braver/SnippetMaker-Next/master/demo.gif)
+![](https://raw.githubusercontent.com/braver/SnippetMakerNext/master/demo.gif)

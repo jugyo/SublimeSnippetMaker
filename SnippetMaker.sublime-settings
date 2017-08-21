@@ -1,3 +1,6 @@
 {
+	// Specify a folder (in Packages/User/) where SnippetMaker can store
+	// snippets. "Edit Snippets" also looks in this folder for snippets.
+
     "snippet_location": "Snippets"
 }

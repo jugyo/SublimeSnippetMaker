@@ -1,4 +1,4 @@
-# SnippetMaker Next
+# SnippetMakerNext
 
 Makes managing snippets easy.
 

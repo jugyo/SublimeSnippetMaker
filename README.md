@@ -1,22 +1,9 @@
-SublimeSnippetMaker
-========
+# SnippetMaker Next
 
-Sublime Text plugin that provides you to make snippets easily.
+Makes managing snippets easy.
 
-![screencast](http://i.imgur.com/lvfFh9G.gif)
+* Select text and use `Make Snippet` via the Command Palette to make a new snippet.
+* `Edit Snippet` let's you select a snippet file to open and edit.
+* Use `Delete Snippet` to send a snippet you no longer need to the trash.
 
-## Installation
-
-```
-$ cd ~/Library/Application\ Support/Sublime\ Text\ 3/Packages
-$ git clone https://github.com/jugyo/SublimeSnippetMaker.git SnippetMaker
-```
-
-## Usage
-
-* Select text for snippet then execute the `Make Snippet` command in the Command Palette.
-* And you can edit your snippets by using `Edit Snippet` command.
-
-### Edit by @fabiantheblind
-
-Added additional input for description.
+![](https://raw.githubusercontent.com/braver/SublimeSnippetMaker/master/demo.gif)

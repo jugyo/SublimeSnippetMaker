@@ -14,6 +14,22 @@ template = """<snippet>
 </snippet>"""
 
 
+def get_snippets():
+    settings = sublime.load_settings('Breadcrumbs.sublime-settings')
+    location = settings.get('snippet_location', 'Snippets')
+    snippets = [
+        [os.path.basename(filepath), filepath] for filepath in glob.iglob(
+            os.path.join(
+                sublime.packages_path(),
+                'User',
+                location,
+                '*.sublime-snippet'
+            )
+        )
+    ]
+    return snippets
+
+
 class MakeSnippetCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         self.snippet_text = "\n".join(
@@ -102,18 +118,8 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
 
 class EditSnippetCommand(sublime_plugin.WindowCommand):
     def run(self):
-        settings = sublime.load_settings('Breadcrumbs.sublime-settings')
-        location = settings.get('snippet_location', 'Snippets')
-        snippets = [
-            [os.path.basename(filepath), filepath] for filepath in glob.iglob(
-                os.path.join(
-                    sublime.packages_path(),
-                    'User',
-                    location,
-                    '*.sublime-snippet'
-                )
-            )
-        ]
+
+        snippets = get_snippets()
 
         def on_done(index):
             if index >= 0:
@@ -133,4 +139,35 @@ class EditSnippetCommand(sublime_plugin.WindowCommand):
             0,
             -1,
             on_highlight
+        )
+
+
+class DeleteSnippetCommand(sublime_plugin.WindowCommand):
+    def run(self):
+
+        snippets = get_snippets()
+
+        def on_done(index):
+            global snippetFile
+            snippetFile = snippets[index]
+            items = [
+                ["No", "Do not delete"],
+                ["Yes", "Delete this snippet file immediately"]
+            ]
+            self.window.show_quick_panel(
+                items,
+                delete_file
+            )
+
+        def delete_file(index):
+            global snippetFile
+            if index == 1:
+                os.remove(snippetFile[1])
+                sublime.status_message(snippetFile[0] + " deleted")
+
+        self.window.show_quick_panel(
+            [_[0] for _ in snippets],
+            on_done,
+            0,
+            -1
         )

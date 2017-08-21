@@ -98,3 +98,39 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         )
         file.write(bytes(snippet_xml, 'UTF-8'))
         file.close()
+
+
+class EditSnippetCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        settings = sublime.load_settings('Breadcrumbs.sublime-settings')
+        location = settings.get('snippet_location', 'Snippets')
+        snippets = [
+            [os.path.basename(filepath), filepath] for filepath in glob.iglob(
+                os.path.join(
+                    sublime.packages_path(),
+                    'User',
+                    location,
+                    '*.sublime-snippet'
+                )
+            )
+        ]
+
+        def on_done(index):
+            if index >= 0:
+                self.window.open_file(snippets[index][1])
+            else:
+                view = self.window.active_view()
+                if self.window.get_view_index(view)[1] == -1:
+                    view.close()
+
+        def on_highlight(index):
+            if index >= 0:
+                self.window.open_file(snippets[index][1], sublime.TRANSIENT)
+
+        self.window.show_quick_panel(
+            [_[0] for _ in snippets],
+            on_done,
+            0,
+            -1,
+            on_highlight
+        )

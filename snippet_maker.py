@@ -144,29 +144,26 @@ class EditSnippetCommand(sublime_plugin.WindowCommand):
 
 class DeleteSnippetCommand(sublime_plugin.WindowCommand):
     def run(self):
+        import Default.send2trash as send2trash
 
-        snippets = get_snippets()
+        def delete_file(answer, snippet):
+            if answer == 1:
+                send2trash.send2trash(snippet[1])
+                sublime.status_message(snippet[0] + " deleted")
 
         def on_done(index):
-            global snippetFile
-            snippetFile = snippets[index]
+            snippet = get_snippets()[index]
             items = [
-                ["No", "Do not delete"],
-                ["Yes", "Delete this snippet file immediately"]
+                ["No", "Go back to safety"],
+                ["Yes, I'm sure", "Delete " + snippet[0] + " immediately"]
             ]
             self.window.show_quick_panel(
                 items,
-                delete_file
+                lambda answer: delete_file(answer, snippet)
             )
 
-        def delete_file(index):
-            global snippetFile
-            if index == 1:
-                os.remove(snippetFile[1])
-                sublime.status_message(snippetFile[0] + " deleted")
-
         self.window.show_quick_panel(
-            [_[0] for _ in snippets],
+            [_[0] for _ in get_snippets()],
             on_done,
             0,
             -1

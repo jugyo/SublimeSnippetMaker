@@ -1,4 +1,5 @@
-# SnippetMakerNext
+SublimeSnippetMaker
+========
 
 Makes managing snippets easy.
 
@@ -6,4 +7,4 @@ Makes managing snippets easy.
 * `Edit Snippet` let's you select a snippet file to open and edit.
 * Use `Delete Snippet` to send a snippet you no longer need to the trash.
 
-![](https://raw.githubusercontent.com/braver/SnippetMakerNext/master/demo.gif)
+![](https://raw.githubusercontent.com/jugyo/SublimeSnippetMaker/master/demo.gif)

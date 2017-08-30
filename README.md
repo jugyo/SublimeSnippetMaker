@@ -1,4 +1,4 @@
-SublimeSnippetMaker
+SnippetMaker for Sublime Text 2 and 3
 ========
 
 Makes managing snippets easy.

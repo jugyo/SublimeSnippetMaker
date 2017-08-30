@@ -21,6 +21,13 @@
                                 "args": {
                                     "base_file": "${packages}/SublimeSnippetMaker/SnippetMaker.sublime-settings"
                                 }
+                            },
+                            {
+                                "caption": "Settings (Sublime Text 2)",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/User/SnippetMaker.sublime-settings"
+                                }
                             }
                         ]
                     }

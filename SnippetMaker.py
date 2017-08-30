@@ -15,7 +15,7 @@ template = """<snippet>
 
 
 def get_snippets():
-    settings = sublime.load_settings('Breadcrumbs.sublime-settings')
+    settings = sublime.load_settings('SnippetMaker.sublime-settings')
     location = settings.get('snippet_location', 'Snippets')
     snippets = [
         [os.path.basename(filepath), filepath] for filepath in glob.iglob(
@@ -80,7 +80,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         )
 
     def make_snippet(self, file_name):
-        settings = sublime.load_settings('Breadcrumbs.sublime-settings')
+        settings = sublime.load_settings('SnippetMaker.sublime-settings')
         location = settings.get('snippet_location', 'Snippets')
 
         file_path = os.path.join(

@@ -90,6 +90,15 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
             file_name
         )
 
+        if int(sublime.version()) < 3000:
+            dir_path = os.path.join(
+                sublime.packages_path(),
+                'User',
+                location
+            )
+            if not os.path.exists(dir_path):
+                os.makedirs(dir_path)
+
         if os.path.exists(file_path) and not sublime.ok_cancel_dialog(
             'Override %s?' % file_name
         ):
@@ -112,7 +121,10 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
             self.description,
             self.scopes
         )
-        file.write(bytes(snippet_xml, 'UTF-8'))
+        if int(sublime.version()) < 3000:
+            file.write(bytes(snippet_xml))
+        else:
+            file.write(bytes(snippet_xml, 'UTF-8'))
         file.close()
 
 
@@ -141,13 +153,18 @@ class EditSnippetCommand(sublime_plugin.WindowCommand):
             on_highlight
         )
 
+    def is_visible(self):
+        int(sublime.version()) > 3000
 
 class DeleteSnippetCommand(sublime_plugin.WindowCommand):
     def run(self):
 
         def on_done(index):
             if index != -1:
-                import Default.send2trash as send2trash
+                if int(sublime.version()) < 3000:
+                    import send2trash
+                else:
+                    import Default.send2trash as send2trash
                 snippet = get_snippets()[index]
                 send2trash.send2trash(snippet[1])
                 sublime.status_message(snippet[0] + " deleted")

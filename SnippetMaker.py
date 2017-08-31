@@ -154,7 +154,8 @@ class EditSnippetCommand(sublime_plugin.WindowCommand):
         )
 
     def is_visible(self):
-        int(sublime.version()) > 3000
+        return int(sublime.version()) > 3000
+
 
 class DeleteSnippetCommand(sublime_plugin.WindowCommand):
     def run(self):

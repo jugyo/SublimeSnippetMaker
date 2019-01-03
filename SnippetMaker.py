@@ -33,7 +33,7 @@ def get_snippets():
 class MakeSnippetCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         self.snippet_text = "\n".join(
-            [self.view.substr(i) for i in self.view.sel()]
+            [self.view.substr(i).replace('$', '\\$') for i in self.view.sel()]
         )
         self.view.window().show_input_panel(
             'Trigger',

@@ -35,7 +35,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         self.snippet_text = "\n".join(
             [self.view.substr(i).replace('$', '\\$') for i in self.view.sel()]
         )
-        self.view.window().show_input_panel(
+        sublime.active_window().show_input_panel(
             'Trigger',
             '',
             self.set_trigger,
@@ -45,7 +45,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
 
     def set_trigger(self, trigger):
         self.trigger = trigger
-        self.view.window().show_input_panel(
+        sublime.active_window().show_input_panel(
             'Description',
             '',
             self.set_description,
@@ -58,7 +58,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         scopes = self.view.scope_name(
             self.view.sel()[0].begin()
         ).strip().replace(' ', ', ')
-        self.view.window().show_input_panel(
+        sublime.active_window().show_input_panel(
             'Scope',
             scopes,
             self.set_scopes,
@@ -71,7 +71,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         self.ask_file_name()
 
     def ask_file_name(self):
-        self.view.window().show_input_panel(
+        sublime.active_window().show_input_panel(
             'File Name',
             self.trigger + '.sublime-snippet',
             self.make_snippet,
@@ -110,7 +110,7 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
             sublime.error_message('Please specify a valid file name, i.e. `awesome.sublime-snippet`')  # noqa: E501
             self.ask_file_name()
         else:
-            self.view.window().open_file(file_path)
+            sublime.active_window().open_file(file_path)
 
     def write_snippet(self, file_path):
         file = open(file_path, "wb")

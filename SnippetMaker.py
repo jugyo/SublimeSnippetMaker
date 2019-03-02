@@ -159,6 +159,8 @@ class EditSnippetCommand(sublime_plugin.WindowCommand):
 class DeleteSnippetCommand(sublime_plugin.WindowCommand):
     def run(self):
 
+        snippets = get_snippets()
+
         def on_done(index):
             if index != -1:
                 if int(sublime.version()) < 3000:
@@ -169,9 +171,21 @@ class DeleteSnippetCommand(sublime_plugin.WindowCommand):
                 send2trash.send2trash(snippet[1])
                 sublime.status_message(snippet[0] + " deleted")
 
+            view = self.window.active_view()
+            if self.window.get_view_index(view)[1] == -1:
+                view.close()
+
+        def on_highlight(index):
+            if index >= 0:
+                self.window.open_file(snippets[index][1], sublime.TRANSIENT)
+
         self.window.show_quick_panel(
-            [_[0] for _ in get_snippets()],
+            [_[0] for _ in snippets],
             on_done,
             0,
-            -1
+            -1,
+            on_highlight
         )
+
+    def is_visible(self):
+        return int(sublime.version()) > 3000

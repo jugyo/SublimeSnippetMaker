@@ -2,6 +2,8 @@
 	// Specify a folder for SnippetMaker to manage.
 	// It will be stored in Packages/User/ and new snippets will be stored here.
 	// The Edit and Delete commands will also look here for snippets to edit.
+	"snippet_location": "Snippets",
 
-    "snippet_location": "Snippets"
+	// If should always escape "$" to "\$" when creating a new snippet
+	"always_escape_dollar_sign": true
 }

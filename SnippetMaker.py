@@ -32,9 +32,16 @@ def get_snippets():
 
 class MakeSnippetCommand(sublime_plugin.TextCommand):
     def run(self, edit):
+        settings = sublime.load_settings('SnippetMaker.sublime-settings')
+        should_escape_dollar_sign = settings.get('always_escape_dollar_sign', True)
+
         self.snippet_text = "\n".join(
-            [self.view.substr(i).replace('$', '\\$') for i in self.view.sel()]
+            [self.view.substr(i) for i in self.view.sel()]
         )
+
+        if should_escape_dollar_sign:
+            self.snippet_text = self.snippet_text.replace('$', '\\$')
+
         sublime.active_window().show_input_panel(
             'Trigger',
             '',

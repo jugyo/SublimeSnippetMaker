@@ -1,4 +1,4 @@
-SnippetMaker for Sublime Text 2 and 3
+SnippetMaker for Sublime Text
 ========
 
 Makes managing snippets easy. Create snippets on the fly, and manage them without digging into a file manager:

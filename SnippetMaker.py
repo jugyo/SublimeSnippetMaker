@@ -5,11 +5,75 @@ import sublime
 import sublime_plugin
 
 template = """<snippet>
+<!--
+    The text to insert into the document when the snippet it applied.
+    Supports snippet fields and variables.
+
+    # Fields
+    Snippets support fields, locations within the snippet that the user may
+    Tab through after inserting the snippet. Fields may be simple positions,
+    but may also provide default content.
+
+    Field formats:
+        - "$N"
+        - "${N:TEXT}"
+
+    "N" is an integer representing the Nth field in the snippet, and
+    "TEXT" is default text to place in the field.
+
+    If a snippet does not contain field $0, it is implicitly added at the end.
+
+    # Variables
+    The following variables may be added to a snippet to include information
+    from the file the snippet is being inserted into:
+        - "$SELECTION": The current selection.
+        - "$TM_SELECTED_TEXT": The current selection.
+        - "$TM_LINE_INDEX": The 0-based line number of the current line.
+        - "$TM_LINE_NUMBER": The 1-based line number of the current line.
+        - "$TM_DIRECTORY": The path to the directory containing the file.
+        - "$TM_FILEPATH": The path to the file.
+        - "$TM_FILENAME": The file name of the file.
+        - "$TM_CURRENT_WORD": The contents of the current word.
+        - "$TM_CURRENT_LINE": The contents of the current line.
+        - "$TM_TAB_SIZE": The number of spaces per tab.
+        - "$TM_SOFT_TABS": YES or NO – if tabs should be translated to spaces.
+        - "$TM_SCOPE": The base scope name of the file’s syntax.
+
+    In addition to the named variables above, fields may also be used as
+    variables, allowing a user to enter a single value and have it repeated in
+    multiple places. For example, "${3:$1}" will use the value of field 1 in
+    field 3.
+
+    # Variable Substitution
+    Variables can be directly referenced, or they may be modified using a
+    regular expression. Variables with substitutions are written in the format
+    "${name/regex/replace/flags}".
+
+    The regex segment supports regular expressions, while the replace segment
+    supports a corresponding replace format. The flags segment can contain
+    zero or more letters from the following list:
+        - "g": All occurrences, rather than just the first, should be replaced.
+        - "i": Case insensitive matching should be performed.
+        - "m": Multiline mode, where "^" matches the beginning of each line.
+
+    # Escaping
+    Since snippets can contain variables, which start with a "$", literal "$"
+    characters must be written as "\$".
+
+    When performing variable substitution, literal "/" characters must be escaped
+    by prefixing them with a backslash.
+-->
 <content><![CDATA[
 %s
 ]]></content>
+
+<!-- The text used to match the snippet in the completions popup -->
 <tabTrigger>%s</tabTrigger>
+
+<!-- An optional description of the snippet, which is shown in the Command Palette. -->
 <description>%s</description>
+
+<!-- The selector of the syntax the snippet should be enabled for -->
 <scope>%s</scope>
 </snippet>"""
 

@@ -6,8 +6,8 @@ import sublime_plugin
 
 template = """<snippet>
 <!--
-    Field syntax: "$number", "${number:default text}"
-    Variable syntax: "$variable", "${variable/regex/replace/flags}"
+    Field syntax: "$input_field_number", or "${input_field_number:default_text}"
+    Variable syntax: "$variable", or "${variable/regex/replace/flags}"
     Reference: https://www.sublimetext.com/docs/completions.html#snippets
 -->
 <content><![CDATA[

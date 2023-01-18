@@ -5,6 +5,11 @@ import sublime
 import sublime_plugin
 
 template = """<snippet>
+<!--
+    Fields: $field_number or ${field_number:default_text}, e.g. $1 or ${1:name}
+    Variables: $variable or ${variable/regex/replace/flags}, e.g. $TM_FILEPATH
+    More: https://www.sublimetext.com/docs/completions.html#snippets
+-->
 <content><![CDATA[
 %s
 ]]></content>

@@ -47,6 +47,10 @@ class MakeSnippetCommand(sublime_plugin.TextCommand):
         if should_escape_dollar_sign:
             self.snippet_text = self.snippet_text.replace('$', '\\$')
 
+        # avoid CDATA in the snippet braking the snipper
+        # https://docs.sublimetext.io/guide/extensibility/snippets.html#snippets-file-format
+        self.snippet_text = self.snippet_text.replace(']]>', r']]$NOT_DEFINED>')
+
         sublime.active_window().show_input_panel(
             'Trigger',
             '',
